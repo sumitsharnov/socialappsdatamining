@@ -1,0 +1,87 @@
+ <!doctype html>
+{% extends 'socialapps/base.html' %}
+{% load socialaccount %}
+{% providers_media_js %}
+<html lang="en">
+{% load static %}
+{% get_media_prefix as MEDIA_URL %}
+{% block content %}
+<h2 class="heading_data" style="color:white" >Welcome to Facebook<a style="float:right; color:white;font-size:15px;"href="{% url 'logoutuser' %}">Logout</a></h2>
+<div>
+ <div>
+   <div style="margin-right:30%">
+     {% for info in myInformation %}
+     <h2 style="color: #ffff4d; margin-top:100px;margin-right:50%">{{user}}'s Infromation</h2>
+     <div class= username style="margin-right:50%">
+     <span class=name><b style="color:#80ff80">Name: </b>{{ info.user_first_name }}</span>
+     <span class=name>{{ info.user_last_name }}</span>
+     <span class=name><b style="color:#80ff80; margin-left:105px">Email to: </b><a style="color:#ff471a" href="mailto:{{info.user_email}}">{{ info.user_email }}</a></span>
+    </div>
+    <div style="margin-top:30px;margin-right:50%">
+      <span class=birthday><b style="color:#80ff80; ">Birthday: </b>{{ info.birthday }}</span>
+      <span class=birthday><b style="color:#80ff80; margin-left:105px">Present Location: </b>{{ info.present_location }}</span>
+    </div>
+    <div style="margin-top:40px;margin-right:50%">
+      <span class=language><b style="color:#80ff80;">First Language: </b>{{ info.user_first_language }}</span>
+      <span class=language><b style="color:#80ff80; margin-left:105px">Second Language: </b>{{ info.user_second_language }}</span>
+    </div>
+    <div style="margin-top:60px;margin-right:50%">
+      <span class=location><b style="color:#80ff80;">Home Town: </b>{{ info.user_hometown }}</span>
+      <span class=location><b style="color:#80ff80;margin-left:50px">Total Friends: </b>{{ info.number_of_friends }}</span>
+    </div>
+   </div>
+    {% endfor %}
+    <div class=likes >
+      {% for info in myInformation %}
+      <h2 style="color:white;">My Likes ({{ info.number_of_likes }})</h2>
+      {% endfor %}
+      <div style="overflow:scroll;height:300px;width:100%;">
+        <table>
+          <tr>
+            <th style="color:white">Likes URL</th>
+            <th style="color:white">Name</th>
+          </tr>
+          {% for like in myLikes %}
+          <tr>
+            <td style="color:#ffff80"><a href="{{like.like_link}}">{{ like.like_link }}</a></td>
+            <td style="color:#ffff80">{{ like.like_subject }}</td>
+         </tr>
+          {% endfor %}
+        </table>
+      </div>
+  </div>
+    <div class="cnt_fb_img">
+      <h2 style="color:white">My Pictures</h2>
+        {% for i in item %}
+           <a href="{{ i.image_url }}">
+             <img class="fb_images"  src="{{ i.image_file.url }}" height="200" width="200">
+           </a>
+        {% endfor %}
+      </div>
+        <div>
+        <h2 style="color:white; margin-top:-1327px;">My Posts</h2>
+        </div>
+          <div style="margin-right:300px; overflow:scroll;height:500px;width:62%;">
+            <table>
+              <tr>
+                <th style="color:white">Post URL</th>
+                <th style="color:white">Status Type</th>
+                <th style="color:white">Status Source</th>
+                <th style="color:white">Caption</th>
+                <th style="color:white">Post Time</th>
+              </tr>
+              {% for myPost in myPosts %}
+              <tr>
+                <td style="color:#ffff80"><a href="{{myPost.post_url}}">{{ myPost.post_url }}</a></td>
+                <td style="color:#ffff80">{{ myPost.status_type }}</td>
+                <td style="color:#ffff80">{{ myPost.status_source }}</td>
+                <td style="color:#ffff80">{{ myPost.caption }}</td>
+                <td style="color:#ffff80">{{ myPost.post_time }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+        </div>
+  </div>
+</div>
+{% endblock %}
+</html>
