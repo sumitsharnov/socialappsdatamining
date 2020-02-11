@@ -1,3 +1,5 @@
+import shutil
+
 from django.shortcuts import render, redirect
 
 from socialmediaapp.settings import LOGIN_REDIRECT_URL
@@ -8,6 +10,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect as httpRequest
+from django.core.files.storage import FileSystemStorage
 import requests
 # Create your views here.
 
@@ -63,8 +67,16 @@ def main_view(request):
 
 @login_required
 def fb(request):
-    command = Command()
+    if request.method =='POST':
+        try:
+            shutil.rmtree('media')
+        except:
+            print("media is not here")
+        upload_image=request.FILES['document']
+        fs = FileSystemStorage()
+        fs.save(upload_image.name, upload_image)
     item = Item.objects.all()
+    command = Command()
     myPosts = MyPosts.objects.all()
     myInformation = MyInformation.objects.all()
     myLikes = MyLikes.objects.all()

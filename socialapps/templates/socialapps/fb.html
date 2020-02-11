@@ -52,6 +52,18 @@
   </div>
     <div class="cnt_fb_img">
       <h2 style="color:white">My Pictures</h2>
+      <div>
+        <form enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+          <b><p style="color:white">Upload Image File:
+          <input style="color:white; margin-left:20px" type="file" name="document">
+          <button style="margin-right:20px" type="submit">Upload Image</button>
+        </b></p>
+        </form>
+        {% if url %}
+        <p>Uploaded file: <a href = "{{ url }}">{{url}}</a></p>
+        {% endif %}
+      </div>
         {% for i in item %}
            <a href="{{ i.image_url }}">
              <img class="fb_images"  src="{{ i.image_file.url }}" height="200" width="200">
