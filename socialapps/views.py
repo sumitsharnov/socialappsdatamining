@@ -1,10 +1,11 @@
 import shutil
 
+from django.core.paginator import PageNotAnInteger, EmptyPage
 from django.shortcuts import render, redirect
-
+from paginator import Paginator
 from socialmediaapp.settings import LOGIN_REDIRECT_URL
 from .management.commands.dataload import Command
-from .models import Item, MyPosts, MyInformation, MyLikes
+from .models import Item, MyPosts, MyInformation, MyLikes, TwitterPosts
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
@@ -67,6 +68,7 @@ def main_view(request):
 
 @login_required
 def fb(request):
+    command = Command()
     if request.method =='POST':
         try:
             shutil.rmtree('media')
@@ -75,8 +77,8 @@ def fb(request):
         upload_image=request.FILES['document']
         fs = FileSystemStorage()
         fs.save(upload_image.name, upload_image)
+        command.upload_image(str(upload_image.name))
     item = Item.objects.all()
-    command = Command()
     myPosts = MyPosts.objects.all()
     myInformation = MyInformation.objects.all()
     myLikes = MyLikes.objects.all()
@@ -84,9 +86,24 @@ def fb(request):
     return render(request, 'socialapps/fb.html', {'item':item, 'myPosts':myPosts, 'myInformation':myInformation, 'myLikes':myLikes})
 
 def logoutuser(request):
-    print(User.objects.get(username = str(request.user)))
-    u = User.objects.get(username = str(request.user))
-    u.delete()
-    if request.method=="GET":
-        logout(request)
+    try:
+        print(User.objects.get(username = str(request.user)))
+        u = User.objects.get(username = str(request.user))
+        u.delete()
+        if request.method=="GET":
+            logout(request)
+    except:
+        print("User already logout")
     return render(request, 'socialapps/home.html')
+
+@login_required
+def twitterpost(request):
+    command = Command()
+    userpost = "nopost"
+    if request.method=="POST":
+        userpost= request.POST["tweetpost"]
+        tweetpost = TwitterPosts(user_post=userpost)
+        command.tweetpost(userpost)
+        tweetpost.save()
+
+    return render(request, 'socialapps/twitterpost.html', {'userpost':userpost})

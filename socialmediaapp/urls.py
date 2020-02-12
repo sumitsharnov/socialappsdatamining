@@ -29,6 +29,8 @@ urlpatterns = [
     path('fb', views.fb, name='fb'),
     path('accounts/', include('allauth.urls')),
     path('logoutuser', views.logoutuser, name='logoutuser'),
+    path('twitterpost', views.twitterpost, name='twitterpost'),
+
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

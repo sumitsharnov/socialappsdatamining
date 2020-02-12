@@ -90,7 +90,15 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django',
+#         'NAME': 'facebookdata',
+#         'HOST':'mongodb+srv://sumit:Sumit@22@facebookdata-v6b32.mongodb.net/test?retryWrites=true&w=majority',
+#         'USER':'sumit',
+#         'PASSWORD':'Sumit@22'
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

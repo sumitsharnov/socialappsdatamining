@@ -1,0 +1,34 @@
+{% extends 'socialapps/base.html' %}
+{% load socialaccount %}
+{% providers_media_js %}
+<!doctype html>
+
+{% load static %}
+
+{% block content %}
+<h2 class="heading_data" style="color:white" >Welcome to Twitter<a style="float:right; color:white;font-size:15px;"href="{% url 'logoutuser' %}">Logout</a></h2>
+
+  <div class="heading_sub_">
+    <span  class='mainview_content'><button  style="background-color:#3B5998; color:white;" id="fbintsa_btn" type="button" onclick="location.href='{% url 'fb' %}'">Go to facebook</button></span>
+  </div>
+<div>
+  <div>
+    <span>
+    <div class="fbintsa_btn">
+      <div >
+        <div style="background-color:#99ccff;  padding:40px;margin-right:1500px;"><b></b>
+            <form method="POST" action="{% url 'twitterpost'%}"">
+              {% csrf_token %}
+              <input type="text"  data-type="text" name="tweetpost" value="" aria-required="true" placeholder="tweet here" aria-label="id" id="tweetpost" required>
+              <input class="submit" type="submit" value="Tweet it">
+              
+            </form>
+        </div>
+      </div>
+    </div>
+    </span>
+    <span><img class='image_all' src = "{% static 'twitter_facebook.jpg' %}" height="300"> </span>
+    </div>
+</div>
+
+{% endblock %}

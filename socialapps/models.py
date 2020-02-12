@@ -53,6 +53,12 @@ class MyInformation(models.Model):
     user_second_language = models.CharField(max_length=100, default='SOME STRING')
     number_of_friends = models.IntegerField(null=True)
     number_of_likes = models.IntegerField(null=True)
+    number_of_photos = models.IntegerField(null=True)
+    number_of_posts = models.IntegerField(null=True)
+
 class MyLikes(models.Model):
     like_link = models.URLField(null=True)
     like_subject = models.CharField(max_length=100, default='SOME STRING')
+
+class TwitterPosts(models.Model):
+    user_post = models.CharField(max_length=100, default='SOME STRING')

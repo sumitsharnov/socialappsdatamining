@@ -6,6 +6,9 @@ import shutil
 from django.core.management import BaseCommand
 from socialapps.models import Item
 from socialapps.models import MyPosts, MyInformation, MyLikes
+import requests
+import time
+from pymongo import MongoClient
 
 
 
@@ -15,6 +18,7 @@ class Fb():
         photos = graph.get_object('me', fields='photos{images}')
         listofPhotos = photos['photos']['data']
         posts_fullPictures = graph.get_object('me', fields='posts{full_picture}')
+        print(type(posts_fullPictures))
         listofPictures = posts_fullPictures['posts']['data']
         # print(listofPhotos)
         # for listofPictures_ID in posts_fullPictures:
@@ -32,8 +36,18 @@ class Fb():
                 item.image_url = pictures.get("full_picture")
                 item.save()
                 item.cache()
-                item.save()
-        print(json.dumps(profile, indent=4))
+                item.save
+        # try:
+        #     client = MongoClient('mongodb+srv://sumit:Sumit@facebookdata-v6b32.mongodb.net/test?retryWrites=true&w=majority')
+        #
+        #     db = client.fbdata
+        #     print(type(profile))
+        #     data = dict(profile)
+        #     print(type(data))
+        #     db.fbuserdata.insert_one(data)
+        #     print(json.dumps(profile, indent=4))
+        # except:
+        #     print("Momgo db is down")
 
         #Importing Posts data
         MyPosts.objects.all().delete()
@@ -87,7 +101,11 @@ class Fb():
             print("no languages found")
         likes = graph.get_object('me', fields='likes{link,name}')
         number_of_likes = len(likes['likes']['data'])
+        number_of_photos = Item.objects.values('image_url').count()
+        number_of_posts = MyPosts.objects.values('post_url').count()
         myInformation.number_of_likes = number_of_likes
+        myInformation.number_of_photos = number_of_photos
+        myInformation.number_of_posts = number_of_posts
         myInformation.save()
 
         # MY likes unsuitable
